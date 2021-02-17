@@ -62,7 +62,7 @@ export class Invoice {
   
   export class InvoiceEntryModel {
     id: string = "";
-    number: string = "";
+    number: number = 0;
     customer: string = "";
   }
   

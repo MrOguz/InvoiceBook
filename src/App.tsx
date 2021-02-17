@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import './App.css';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import {
   Invoice,
   InvoiceViewModel,
@@ -14,6 +15,8 @@ import {
 } from "./app/models/app-models";
 
 function App() {
+
+  const [prefix, setPrefix] = useState('TRY');
   const [invoiceData, setInvoiceData] = useState<Array<Invoice>>(
     initialInvoiceData
   );
@@ -122,7 +125,7 @@ function App() {
       return;
     }
 
-    if (price && price.trim()) {
+    if (price && price.toString().trim()) {
       invoiceDetail.ItemPrice = Number(price);
     } else {
       alert("Ürün fiyatı zorunlu.");
@@ -164,7 +167,7 @@ function App() {
       return;
     }
 
-    if (number && number.trim()) {
+    if (number && number.toString().trim()) {
       invoice.InvoiceNumber = number.toString();
     } else {
       alert("Fatura no zorunlu.");
@@ -254,39 +257,36 @@ function App() {
   return (
     <div className="App">
       <div className="container">
-        <div className="row">
-          <div className="col">
-            <h2>Fatura Başlık Kaydı</h2>
-            <label>FaturaId : </label>
-            <input className="form-control"
-              type="text"
-              id="fInvoiceId"
-              onChange={(ev) =>
+       <div className="row">
+        <div className="col">
+          <div className="form-group">
+          <h2>Fatura Başlık Kaydı</h2>
+          <div className="input-group mb-3"> 
+          <div className="row col-12">
+          <label>Fatura Id  </label>
+            <input type="text" id="fInvoiceId" className="form-control" onChange={(ev) =>
                 setCurrentInvoiceEntry({
                   ...currentInvoiceEntry,
                   id: ev.target.value.trim()
                 })
               }
             />
-            <br />
-            <br />
-            <label>FaturaNo : </label>
-            <input className="form-control"
-              type="text"
-              id="fInvoiceNumber"
-              onChange={(ev) =>
+          </div>
+          <div className="row col-12">
+          <label>Fatura No  </label><br/> 
+            <input type="text" id="fInvoiceNumber" className="form-control" onChange={(ev) =>
                 setCurrentInvoiceEntry({
                   ...currentInvoiceEntry,
-                  number: ev.target.value.trim()
+                  number: Number(ev.target.value.toString().trim())
                 })
               }
             />
-            <br />
-            <br />
-            <label>Müşteri : </label>
-            <input className="form-control"
+          </div>
+          <div className="row col-12">
+          <label>Müşteri Adi </label>
+            <input 
               type="text"
-              id="fCustomerName"
+              id="fCustomerName" className="form-control"
               onChange={(ev) =>
                 setCurrentInvoiceEntry({
                   ...currentInvoiceEntry,
@@ -294,19 +294,24 @@ function App() {
                 })
               }
             />
-            <br />
-            <br />
-            <button type="button" onClick={saveHead}>
+          </div>
+            <div className="row col">
+            <button type="button" className="form-group" style={{marginTop:20}}  onClick={saveHead}>
               Kaydet
             </button>
-            <br />
+            </div>
+          </div>
+             </div>
           </div>
           <div className="col">
+            <div className="input-group mb-3">
             <h2>Fatura Detay Kaydı</h2>
-            <label>FaturaId :</label>
-            <input className="form-control"
+             <div className="row col-12">
+             <label>FaturaId </label>
+            <input 
               type="text"
               id="fInvoiceIdForDetail"
+              className="form-control"
               onChange={(ev) =>
                 setCurrentInvoiceDetailEntry({
                   ...currentInvoiceDetailEntry,
@@ -314,12 +319,13 @@ function App() {
                 })
               }
             />
-            <br />
-            <br />
-            <label>Ürün Adı : </label>
-            <input className="form-control"
+             </div>
+              <div className="row col-12">
+              <label>Ürün Adı </label>
+            <input
               type="text"
               id="fItemName"
+              className="form-control"
               onChange={(ev) =>
                 setCurrentInvoiceDetailEntry({
                   ...currentInvoiceDetailEntry,
@@ -327,12 +333,15 @@ function App() {
                 })
               }
             />
-            <br />
-            <br />
-            <label>Ürün Fiyatı : </label>
-            <input className="form-control"
+              </div>
+              <div className='row col-12'>
+              <label>Ürün Fiyatı </label>
+            <input 
               type="text"
               id="fItemPrice"
+              className="form-control"
+              prefix ={prefix}
+              step={1}
               onChange={(ev) =>
                 setCurrentInvoiceDetailEntry({
                   ...currentInvoiceDetailEntry,
@@ -340,12 +349,13 @@ function App() {
                 })
               }
             />
-            <br />
-            <br />
-            <label>Ürün Miktarı : </label>
-            <input className="form-control"
+              </div>
+              <div className="row col-12">
+              <label>Ürün Miktarı  </label>
+            <input 
               type="text"
               id="fItemQuantity"
+              className="form-control"
               onChange={(ev) =>
                 setCurrentInvoiceDetailEntry({
                   ...currentInvoiceDetailEntry,
@@ -353,12 +363,13 @@ function App() {
                 })
               }
             />
-            <br />
-            <br />
-            <label>İndirim : </label>
-            <input className="form-control"
+              </div>
+            <div className="row col-12">
+            <label>İndirim </label>
+            <input 
               type="text"
               id="fItemDiscount"
+              className="form-control"
               onChange={(ev) =>
                 setCurrentInvoiceDetailEntry({
                   ...currentInvoiceDetailEntry,
@@ -366,17 +377,18 @@ function App() {
                 })
               }
             />
-            <br />
-            <br />
-            <button type="button" onClick={saveDetail}>
+            </div>
+           <div className="row col 6">
+           <button type="button" style={{marginTop:20}} onClick={saveDetail}>
               Kaydet
             </button>
-            <br />
+           </div>
+            </div>
           </div>
-
-          <br />
-          <br />
-          <table className="mystyle">
+        </div>
+          <div className='row'>
+          <div className='col'>
+          <table className="table table-hover table-dark">
             <thead>
               <tr>
                 <th>Fatura ID</th>
@@ -424,11 +436,12 @@ function App() {
               ))}
             </tbody>
           </table>
-          <br />
+          </div>
+          <div className='col'>
           {selectedDetails && (
             <div>
               <h2>Fatura Detay</h2>
-              <table id="tableDetail" className="hide">
+              <table id="tableDetail" className="table table-hover table-dark hide">
                 <thead>
                   <tr>
                     <th>Fatura ID</th>
@@ -452,7 +465,8 @@ function App() {
               </table>
             </div>
           )}
-        </div>
+          </div>
+          </div>
       </div>
     </div>
   );
